@@ -37,7 +37,8 @@ export async function POST(request: Request) {
     name,
   });
 
-  cookies().set({
+  const cookieStore = await Promise.resolve(cookies());
+  cookieStore.set({
     name: "auth_token",
     value: user.id,
     httpOnly: true,
@@ -50,7 +51,8 @@ export async function POST(request: Request) {
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const requestedId = searchParams.get("id") ?? cookies().get("auth_token")?.value;
+  const cookieStore = await Promise.resolve(cookies());
+  const requestedId = searchParams.get("id") ?? cookieStore.get("auth_token")?.value;
 
   if (!requestedId) {
     return NextResponse.json(

@@ -9,8 +9,9 @@ import {
   type PlanInput,
 } from "@/lib/user/user-store";
 
-function resolveUser() {
-  const token = cookies().get("auth_token")?.value;
+async function resolveUser() {
+  const cookieStore = await Promise.resolve(cookies());
+  const token = cookieStore.get("auth_token")?.value;
 
   if (!token) {
     return { error: "Необхідна авторизація.", status: 401 } as const;
@@ -129,7 +130,7 @@ function parsePlan(payload: unknown):
 }
 
 export async function GET() {
-  const result = resolveUser();
+  const result = await resolveUser();
 
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: result.status });
@@ -144,7 +145,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const result = resolveUser();
+  const result = await resolveUser();
 
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: result.status });
