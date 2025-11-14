@@ -19,11 +19,22 @@ export interface UserProfile {
   [key: string]: unknown;
 }
 
+export interface UserPlanExercise {
+  id: string;
+  exerciseId?: string;
+  name: string;
+  sets: number;
+  repetitions?: number;
+  weightKg?: number;
+}
+
 export interface UserPlan {
   id: string;
   name: string;
-  status?: "active" | "inactive" | "trial" | "cancelled";
-  [key: string]: unknown;
+  description?: string;
+  exercises: UserPlanExercise[];
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface UserSnapshot {
