@@ -27,6 +27,34 @@ export interface Workout {
   perceivedIntensity?: number;
 }
 
+export interface WorkoutSessionSet {
+  setNumber: number;
+  weightKg?: number;
+  repetitions: number;
+}
+
+export interface WorkoutSessionLog {
+  id: string;
+  userId: string;
+  workoutId: string;
+  exerciseId: string;
+  performedAt: string;
+  sets: WorkoutSessionSet[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type CreateWorkoutSessionLogInput = Omit<
+  WorkoutSessionLog,
+  "id" | "createdAt" | "updatedAt"
+>;
+
+export interface WorkoutSessionLogFilters {
+  userId?: string;
+  workoutId?: string;
+  exerciseId?: string;
+}
+
 export interface UserProfile {
   id: string;
   email: string;
