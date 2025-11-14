@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
 import { useNavigationVisibility } from "./navigation-visibility";
 
 const links = [
@@ -20,10 +23,17 @@ export function Navigation() {
   }
 
   return (
-    <header className="border-b border-slate-200 bg-white shadow-sm">
-      <nav className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-        <span className="text-lg font-semibold text-slate-900">My Trener</span>
-        <ul className="flex items-center gap-6 text-sm font-medium text-slate-700">
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-5 py-4">
+        <Link href="/" className="flex items-center gap-2">
+          <span className="font-heading text-xl font-semibold text-foreground">
+            My Trener
+          </span>
+          <Badge variant="muted" className="hidden border border-primary/30 text-xs text-primary sm:inline-flex">
+            Beta
+          </Badge>
+        </Link>
+        <ul className="flex items-center gap-2 rounded-full border border-border/60 bg-muted/40 p-1 text-sm font-medium text-muted-foreground">
           {links.map((link) => {
             const isActive = pathname === link.href;
 
@@ -31,10 +41,13 @@ export function Navigation() {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className={
-                    "transition-colors hover:text-slate-900 " +
-                    (isActive ? "text-slate-900" : "text-slate-600")
-                  }
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full px-4 py-2 transition-colors",
+                    isActive
+                      ? "bg-background text-foreground shadow-sm"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  aria-current={isActive ? "page" : undefined}
                 >
                   {link.label}
                 </Link>
