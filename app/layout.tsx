@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { Navigation } from "@/components/navigation";
 import { NavigationVisibilityProvider } from "@/components/navigation-visibility";
 import "./globals.css";
+import { UserProvider } from "@/lib/user/user-context";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,19 +31,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-slate-50 font-sans antialiased`}
       >
-        <NavigationVisibilityProvider>
-          <div className="flex min-h-screen flex-col">
-            <Navigation />
-            <main className="mx-auto w-full max-w-5xl flex-1 px-6 py-10">
-              {children}
-            </main>
-            <footer className="border-t border-slate-200 bg-white py-6">
-              <p className="mx-auto max-w-5xl text-sm text-slate-500">
-                © {new Date().getFullYear()} My Trener. Усі права захищено.
-              </p>
-            </footer>
-          </div>
-        </NavigationVisibilityProvider>
+        <UserProvider>{children}</UserProvider>
       </body>
     </html>
   );
