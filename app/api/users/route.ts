@@ -5,14 +5,9 @@ import {
   createUser,
   findUserByEmail,
   getUserById,
+  sanitizeStoredUser,
   type CreateUserInput,
 } from "@/lib/user/user-store";
-
-function sanitizeUser(user: { password: string } & Record<string, unknown>) {
-  const { password: _password, ...rest } = user;
-  void _password;
-  return rest;
-}
 
 export async function POST(request: Request) {
   const payload = (await request.json().catch(() => ({}))) as Partial<CreateUserInput>;
@@ -50,7 +45,7 @@ export async function POST(request: Request) {
     sameSite: "lax",
   });
 
-  return NextResponse.json({ user: sanitizeUser(user) }, { status: 201 });
+  return NextResponse.json({ user: sanitizeStoredUser(user) }, { status: 201 });
 }
 
 export async function GET(request: Request) {
@@ -73,5 +68,5 @@ export async function GET(request: Request) {
     );
   }
 
-  return NextResponse.json({ user: sanitizeUser(user) }, { status: 200 });
+  return NextResponse.json({ user: sanitizeStoredUser(user) }, { status: 200 });
 }

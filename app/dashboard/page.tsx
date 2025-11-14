@@ -1,3 +1,5 @@
+import SelectPlan from "./_components/select-plan";
+
 export default function DashboardPage() {
   return (
     <section className="space-y-6">
@@ -7,6 +9,7 @@ export default function DashboardPage() {
           Огляд запланованих тренувань, останніх результатів та швидких дій.
         </p>
       </header>
+      <SelectPlan />
       <div className="grid gap-6 md:grid-cols-2">
         <article className="rounded-lg border border-slate-200 bg-white p-6 shadow-sm">
           <h2 className="text-lg font-semibold text-slate-900">Найближчі тренування</h2>
