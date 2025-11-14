@@ -30,7 +30,6 @@ async function uploadToVercelBlob(dataset: ExerciseDataset) {
       token,
       contentType: "application/json",
       addRandomSuffix: false,
-      ifNoneMatch: "*",
     });
   } catch (error) {
     const status = typeof error === "object" && error && "status" in error ? (error as { status?: number }).status : null;

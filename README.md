@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# My Trener
 
-## Getting Started
+My Trener is a Next.js application for planning workouts, logging training sessions, and tracking progress.
 
-First, run the development server:
+## Prerequisites
+
+- Node.js 20+
+- pnpm 10+
+
+Install dependencies:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Environment variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.example` to `.env.local` (or `.env`) and populate it with credentials from your Firebase project and, optionally, the Vercel Blob token used for seeding the exercise dataset.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Variable | Required | Description |
+| --- | --- | --- |
+| `NEXT_PUBLIC_FIREBASE_API_KEY` | ✅ | Firebase Web API key. |
+| `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN` | ✅ | Firebase auth domain. |
+| `NEXT_PUBLIC_FIREBASE_PROJECT_ID` | ✅ | Firebase project ID. |
+| `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET` | ✅ | Firebase storage bucket. |
+| `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID` | ✅ | Firebase messaging sender ID. |
+| `NEXT_PUBLIC_FIREBASE_APP_ID` | ✅ | Firebase app ID. |
+| `VERCEL_BLOB_READ_WRITE_TOKEN` | ⛔️ | Optional token that enables uploading the exercise dataset to Vercel Blob storage during bootstrapping. |
 
-## Learn More
+> ℹ️ The application requires all Firebase variables to be present both locally and in production in order to connect to Firestore.
 
-To learn more about Next.js, take a look at the following resources:
+## Local development
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Start the development server:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm dev
+```
 
-## Deploy on Vercel
+Visit [http://localhost:3000](http://localhost:3000) to access the app.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploying to Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Create a project from this repository in the [Vercel Dashboard](https://vercel.com/dashboard).
+2. In **Settings → Environment Variables**, add each variable from the table above.
+   - Add them to the **Production** environment.
+   - If you use Preview deployments, repeat the same variables for the **Preview** environment.
+3. Redeploy the project so the new environment variables take effect.
+
+Once configured, the API routes will have access to Firebase and the optional Vercel Blob integration.
+
+## Production verification
+
+Before deploying, run the production build locally to ensure the API routes compile and bootstrapping succeeds without runtime errors:
+
+```bash
+pnpm build
+```
+
+This command executes the same compilation steps Vercel performs for production builds, validating that Server Actions and API routes are ready to run in the hosted environment.
