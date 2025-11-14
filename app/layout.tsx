@@ -31,7 +31,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-slate-50 font-sans antialiased`}
       >
-        <UserProvider>{children}</UserProvider>
+        <NavigationVisibilityProvider>
+          <UserProvider>
+            <Navigation />
+            <main className="min-h-screen bg-slate-50">
+              {children}
+            </main>
+          </UserProvider>
+        </NavigationVisibilityProvider>
       </body>
     </html>
   );
