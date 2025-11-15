@@ -4,9 +4,9 @@ import type { ReactNode } from "react";
 
 import "./globals.css";
 
-import { Navigation } from "@/components/navigation";
+import { MobileAuthGate } from "@/components/auth/mobile-auth-gate";
+import { AppHeader } from "@/components/app-header";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { NavigationVisibilityProvider } from "@/components/navigation-visibility";
 import { UserProvider } from "@/lib/user/user-context";
 import { cn } from "@/lib/utils";
 
@@ -40,14 +40,14 @@ export default function RootLayout({
         )}
       >
         <TooltipProvider delayDuration={150}>
-          <NavigationVisibilityProvider>
-            <UserProvider>
-              <Navigation />
-              <main className="min-h-screen bg-background px-4 pb-12 pt-6 md:px-10">
-                {children}
-              </main>
-            </UserProvider>
-          </NavigationVisibilityProvider>
+          <UserProvider>
+            <MobileAuthGate>
+              <div className="mx-auto flex min-h-screen w-full max-w-xl flex-col px-4 pb-10 pt-6 sm:max-w-2xl">
+                <AppHeader />
+                <main className="flex-1">{children}</main>
+              </div>
+            </MobileAuthGate>
+          </UserProvider>
         </TooltipProvider>
       </body>
     </html>
