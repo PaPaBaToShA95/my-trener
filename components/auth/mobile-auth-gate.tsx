@@ -24,6 +24,25 @@ import { useUser, type UserProfile as UserContextProfile } from "@/lib/user/user
 import type { MobileUserProfile } from "@/types/mobile-app";
 
 const TOKEN_KEY = "my-trener-auth-token";
+const MOBILE_AUTH_COOKIE = "mobile_auth_token";
+const ONE_YEAR_MS = 365 * 24 * 60 * 60 * 1000;
+
+function setMobileSessionCookie(userId: string) {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  const expires = new Date(Date.now() + ONE_YEAR_MS).toUTCString();
+  document.cookie = `${MOBILE_AUTH_COOKIE}=${encodeURIComponent(userId)}; path=/; expires=${expires}`;
+}
+
+function clearMobileSessionCookie() {
+  if (typeof document === "undefined") {
+    return;
+  }
+
+  document.cookie = `${MOBILE_AUTH_COOKIE}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+}
 
 type AuthMode = "loading" | "register" | "login" | "authenticated";
 
@@ -91,12 +110,15 @@ export function MobileAuthGate({ children }: MobileAuthGateProps) {
 
         if (storedToken && storedToken === existingUser.pinHash) {
           setProfile(toUserContextProfile(existingUser));
+          setMobileSessionCookie(existingUser.id);
           setMode("authenticated");
           await updateMobileUser(id, { lastLoginAt: new Date().toISOString() });
         } else {
+          clearMobileSessionCookie();
           setMode("login");
         }
       } else {
+        clearMobileSessionCookie();
         setMode("register");
       }
     } catch (bootstrapError) {
@@ -104,6 +126,7 @@ export function MobileAuthGate({ children }: MobileAuthGateProps) {
       setError(
         "Не вдалося зʼєднатися з Firebase. Перевірте токени доступу та спробуйте ще раз.",
       );
+      clearMobileSessionCookie();
       setMode("register");
     }
   }, [setProfile]);
@@ -151,6 +174,7 @@ export function MobileAuthGate({ children }: MobileAuthGateProps) {
         if (typeof window !== "undefined") {
           localStorage.setItem(TOKEN_KEY, created.pinHash);
         }
+        setMobileSessionCookie(created.id);
         setPin("");
         setPinConfirm("");
         setMode("authenticated");
@@ -193,6 +217,7 @@ export function MobileAuthGate({ children }: MobileAuthGateProps) {
         if (typeof window !== "undefined") {
           localStorage.setItem(TOKEN_KEY, pinHash);
         }
+        setMobileSessionCookie(user.id);
         setLoginPin("");
         setMode("authenticated");
       } catch (loginError) {
@@ -210,6 +235,7 @@ export function MobileAuthGate({ children }: MobileAuthGateProps) {
       localStorage.removeItem(TOKEN_KEY);
     }
 
+    clearMobileSessionCookie();
     setProfile(null);
     setMode(user ? "login" : "register");
     setLoginPin("");

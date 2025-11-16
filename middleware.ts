@@ -27,7 +27,9 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  const sessionToken = request.cookies.get("auth_token")?.value;
+  const sessionToken =
+    request.cookies.get("auth_token")?.value ??
+    request.cookies.get("mobile_auth_token")?.value;
 
   if (!sessionToken) {
     const loginUrl = request.nextUrl.clone();
