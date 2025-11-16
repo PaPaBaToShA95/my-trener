@@ -312,7 +312,8 @@ export function MobileAuthGate({ children }: MobileAuthGateProps) {
                   <Input
                     type="password"
                     inputMode="numeric"
-                    pattern="\\d*"
+                    pattern="[0-9]{4,6}"
+                    title="PIN має складатися з 4-6 цифр"
                     value={pin}
                     onChange={(event) => setPin(event.target.value)}
                     placeholder="4-6 цифр"
@@ -327,7 +328,8 @@ export function MobileAuthGate({ children }: MobileAuthGateProps) {
                   <Input
                     type="password"
                     inputMode="numeric"
-                    pattern="\\d*"
+                    pattern="[0-9]{4,6}"
+                    title="PIN має складатися з 4-6 цифр"
                     value={pinConfirm}
                     onChange={(event) => setPinConfirm(event.target.value)}
                     placeholder="повторіть"
@@ -360,7 +362,8 @@ export function MobileAuthGate({ children }: MobileAuthGateProps) {
                 <Input
                   type="password"
                   inputMode="numeric"
-                  pattern="\\d*"
+                  pattern="[0-9]{4,6}"
+                  title="PIN має складатися з 4-6 цифр"
                   value={loginPin}
                   onChange={(event) => setLoginPin(event.target.value)}
                   placeholder="Введіть ваш PIN"
