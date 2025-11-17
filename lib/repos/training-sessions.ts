@@ -2,8 +2,6 @@ import {
   collection,
   doc,
   getDocs,
-  limit,
-  orderBy,
   query,
   setDoc,
   where,
@@ -32,34 +30,26 @@ export async function getLatestTrainingSessionRecord(
   sessionId: string,
 ): Promise<TrainingSessionRecord | null> {
   const db = getDb();
-  const sessionsQuery = query(
-    collection(db, COLLECTION),
-    where("userId", "==", userId),
-    where("sessionId", "==", sessionId),
-    orderBy("completedAt", "desc"),
-    limit(1),
-  );
+  const sessionsQuery = query(collection(db, COLLECTION), where("userId", "==", userId));
 
   const snapshot = await getDocs(sessionsQuery);
+  const records = snapshot.docs
+    .map((docSnapshot) => docSnapshot.data() as TrainingSessionRecord)
+    .filter((record) => record.sessionId === sessionId)
+    .sort((a, b) => (b.completedAt ?? "").localeCompare(a.completedAt ?? ""));
 
-  if (snapshot.empty) {
-    return null;
-  }
-
-  return snapshot.docs[0]!.data() as TrainingSessionRecord;
+  return records[0] ?? null;
 }
 
 export async function listTrainingSessionRecords(
   userId: string,
 ): Promise<TrainingSessionRecord[]> {
   const db = getDb();
-  const sessionsQuery = query(
-    collection(db, COLLECTION),
-    where("userId", "==", userId),
-    orderBy("completedAt", "desc"),
-  );
+  const sessionsQuery = query(collection(db, COLLECTION), where("userId", "==", userId));
 
   const snapshot = await getDocs(sessionsQuery);
 
-  return snapshot.docs.map((docSnapshot) => docSnapshot.data() as TrainingSessionRecord);
+  return snapshot.docs
+    .map((docSnapshot) => docSnapshot.data() as TrainingSessionRecord)
+    .sort((a, b) => (b.completedAt ?? "").localeCompare(a.completedAt ?? ""));
 }
