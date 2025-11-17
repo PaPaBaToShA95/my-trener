@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 
 import { TrainingSessionRunner } from "@/components/training/training-session-runner";
-import { findTrainingSessionById } from "@/lib/training/sessions";
+import { findTrainingSessionById, getAllTrainingSessions } from "@/lib/training/sessions";
 
 interface WorkoutPageProps {
   params: { id: string };
@@ -22,4 +22,8 @@ export default function WorkoutPage({ params }: WorkoutPageProps) {
       exercises={resolved.session.exercises}
     />
   );
+}
+
+export function generateStaticParams() {
+  return getAllTrainingSessions().map(({ id }) => ({ id }));
 }

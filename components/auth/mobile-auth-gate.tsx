@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   createContext,
   useCallback,
@@ -377,6 +378,9 @@ export function MobileAuthGate({ children }: MobileAuthGateProps) {
                 ) : (
                   "Розпочати"
                 )}
+              </Button>
+              <Button variant="outline" size="lg" className="w-full" asChild>
+                <Link href="/login">Вже маєте акаунт? Увійти</Link>
               </Button>
             </form>
           ) : (
