@@ -28,18 +28,6 @@ const MENU_ITEMS = [
 export default function HomePage() {
   return (
     <section className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-3xl border border-border/50 bg-card/70 p-4 shadow-lg backdrop-blur">
-        <div>
-          <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground">Повертаєтесь?</p>
-          <p className="text-sm text-muted-foreground">Увійдіть, щоб продовжити прогрес із будь-якого пристрою.</p>
-        </div>
-        <Link
-          href="/login"
-          className="inline-flex items-center gap-2 rounded-2xl border border-primary/40 bg-primary/15 px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/25"
-        >
-          Вже маєте акаунт? Увійти
-        </Link>
-      </div>
       <div className="grid gap-4">
         {MENU_ITEMS.map(({ href, label, description, icon: Icon, accent }) => (
           <Link
