@@ -11,7 +11,14 @@ interface WorkoutPageProps {
 
 export default async function WorkoutPage({ params }: WorkoutPageProps) {
   const { id } = await params;
-  const resolved = findTrainingSessionById(id);
+  const normalizedId = (() => {
+    try {
+      return decodeURIComponent(id);
+    } catch {
+      return id;
+    }
+  })();
+  const resolved = findTrainingSessionById(normalizedId);
 
   if (!resolved) {
     notFound();
